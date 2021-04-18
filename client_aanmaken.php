@@ -42,9 +42,9 @@
 
         <form action="" method="POST" id="form-aanmaken-client">
             <div class="naamgegevens">
-              <input type="text" name="voornaam" required>Voornaam <br />
-              <input type="text" name="tussenvoegsel">Tussenvoegsel <br />
-              <input type="text" name="achternaam" required>Achternaam <br /><br />
+              <input type="text" name="voornaam" id="field" required> Voornaam <br />
+              <input type="text" name="tussenvoegsel" id="field"> Tussenvoegsel <br />
+              <input type="text" name="achternaam" required> Achternaam <br /><br />
             </div>
 
             <div class="medischegegevens">

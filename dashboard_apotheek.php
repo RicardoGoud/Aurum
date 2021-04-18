@@ -50,7 +50,6 @@
     $stmt = $verbinding->prepare("SELECT * FROM medicijn_orders WHERE apotheker = ?");
     $stmt->execute(array($_SESSION["id"]));
     $medicijn_orders = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-    print_r($_SESSION["id"]);
     ?>
     <div id="big_wrapper">
         <table>
@@ -60,37 +59,60 @@
                 <td>Datum Uitgeschreven</td>
                 <td>Opgehaald</td>
                 <td>Datum opgehaald</td>
-                <td></td>
+                <td>Afgerond?</td>
             </tr>
                 <?php 
-                foreach($medicijn_orders as $client_id){
+                foreach($medicijn_orders as $medicijn_order){
                     $stmt = $verbinding->prepare("SELECT * FROM gebruiker WHERE id = ?");
-                    $stmt->execute(array($client_id["client_id"]));
+                    $stmt->execute(array($medicijn_order["client_id"]));
                     $client_ids = $stmt -> fetch(PDO::FETCH_ASSOC);
-                    echo "<tr><td>" . $client_ids["voornaam"] . "</td>";
-                }
-                foreach($medicijn_orders as $medicijn_id){
+
                     $stmt = $verbinding->prepare("SELECT * FROM medicijnen WHERE id = ?");
-                    $stmt->execute(array($medicijn_id["medicijn"]));
-                    $medicijn_ids = $stmt -> fetch(PDO::FETCH_ASSOC);
-                    echo "<td>" . $medicijn_ids["medicijn"] . "</td>";
-                }
-                foreach($medicijn_orders as $datum_voorgeschreven){
-                    echo "<td>" . $datum_voorgeschreven["datum_voorgeschreven"] . "</td>";
-                }
-                foreach($medicijn_orders as $opgehaald_id){
-                    if($opgehaald_id["opgehaald"] == 0){
-                        $opgehaald = "Nee";
+                    $stmt->execute(array($medicijn_order["medicijn"]));
+                    $medicijn = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+                    $medicijn_order_id = $medicijn_order["id"];
+
+                    echo "<tr><td>" . $client_ids["voornaam"] . "</td>";
+
+                    echo "<td>" . $medicijn["medicijn"] . "</td>";
+
+                    echo "<td>" . $medicijn_order["datum_voorgeschreven"] . "</td>";
+
+                    if($medicijn_order["opgehaald"] == 0){
+                      $opgehaald = "Nee";
                     }else{
                         $opgehaald = "Ja";
                     }
                     echo "<td>" . $opgehaald . "</td>";
+
+                    echo "<td>" . $medicijn_order["datum_opgehaald"] . "</td>";
+
+                    if($medicijn_order["opgehaald"] == 0){
+                    echo "<td> 
+                          <form type='hidden' method='POST'>
+                          <input type='hidden' name='order_id' value='$medicijn_order_id' required>
+                          <input type='submit' name='submit' value='Afronden'>
+                          </form>
+                          </td></tr>";
+                    }elseif($medicijn_order["opgehaald"] == 1){
+                      echo "<td></td>";
+                    }
                 }
-                foreach($medicijn_orders as $datum_opgehaald){
-                    echo "<td>" . $datum_opgehaald["datum_opgehaald"] . "</td>";
-                }
-                foreach($medicijn_orders as $knop){
-                    echo "<td> <button>Afronden</button> </td></tr>";
+
+                if(isset($_POST["submit"])){
+                  $order_id = $_POST["order_id"];
+                  $date = date("Y/m/d");
+                  $opgehaald_true = "1";
+
+                  $stmt = $verbinding->prepare("SELECT * FROM medicijn_orders WHERE id = ?");
+                  $stmt->execute(array($order_id));
+                  $order = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+                  $stmt = $verbinding->prepare("UPDATE medicijn_orders SET opgehaald = ?, datum_opgehaald = ? WHERE id = ?");
+                  $stmt->execute(array($opgehaald_true, $date, $order_id));
+                  
+                  header("Location: ./dashboard_apotheek.php");
                 }
                 ?>
         </table>

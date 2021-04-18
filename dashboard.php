@@ -44,7 +44,7 @@
       </div>
     </div>
     <!-- Eind logo + inlog -->
-
+    <div id=achtergrond_div>
     <div id="groet">
         <a style="color: #226282; font-size: 50px;">Hallo</a><br />
         <?php echo $_SESSION["voornaam"] ." ". $_SESSION["tussenvoegsel"] ." ". $_SESSION["achternaam"]; ?>.<br />
@@ -89,6 +89,6 @@
 
 
 
-
+  </div>
     </body>
 </html>

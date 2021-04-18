@@ -37,25 +37,34 @@
       </div>
     </div>
     <!-- Eind logo + inlog -->
-    
+    <div id=achtergrond_div>
     <div class="form-aanmaken-client-div">
 
         <form action="" method="POST" id="form-aanmaken-client">
             <div class="naamgegevens">
-              <input type="text" name="voornaam" id="field" required> Voornaam <br />
-              <input type="text" name="tussenvoegsel" id="field"> Tussenvoegsel <br />
-              <input type="text" name="achternaam" required> Achternaam <br /><br />
+
+              <input type="text" name="voornaam" id="field" required autocomplete="off"> Voornaam <br />
+              <input type="text" name="tussenvoegsel" id="field" autocomplete="off"> Tussenvoegsel <br />
+              <input type="text" name="achternaam" required id="field" autocomplete="off"> Achternaam <br /><br />
             </div>
 
             <div class="medischegegevens">
-              <input name="geslacht" type="radio" value="Man" required>Man</input>                  <!-- Geslacht -->
-              <input name="geslacht" type="radio" value="Vrouw">Vrouw</input><br />
+            <label class="container">Man
+              <input name="geslacht" type="radio" value="Man" id="radio_geslacht" required>
+              <span class="checkmark"></span> 
+            </label>                                                                                <!-- Geslacht -->
 
-              <input name="datum" type="date" required><br />                                       <!-- Geboortedatum -->
-              <input name="lengte" type="number" placeholder="lengte" required>CM<br /> <!-- Lengte -->
+            <label class="container">Vrouw
+              <input name="geslacht" type="radio" value="Vrouw" id="radio_geslacht">
+              <span class="checkmark"></span> 
+            </label><br /><br /><br />
+
               
-              <input name="gewicht" type="number" required>KG<br />                                 <!-- Gewicht -->
-              <select name="bloedgroep" required>                                                   <!-- Bloedgroep -->
+              <input name="datum" type="date" id="field" required><br />                                       <!-- Geboortedatum -->
+              <input name="lengte" type="number" id="field" autocomplete="off" required>Lengte (CM)<br /> <!-- Lengte -->
+              
+              <input name="gewicht" type="number" id="field" autocomplete="off" required>Gewicht (KG)<br /><br />                                <!-- Gewicht -->
+              <select name="bloedgroep" id="bloedgroep" required>                                                   <!-- Bloedgroep -->
                   <option value="A+">A+</option>
                   <option value="A-">A-</option>
                   <option value="AB+">AB+</option>
@@ -78,7 +87,7 @@
                 // Is de momenteel ingelogde gebruiker geen huisarts wordt er een lijst met momenteel aangesloten huisartsen getoond
                 else{ 
                   echo 
-                  "<select name='huisarts' required><br />                               
+                  "<select name='huisarts' id='multiselect' required><br />                               
                       <option selected disabled>Kies een huisarts</option>";
                   
                       $stmt = $verbinding->prepare("SELECT * FROM huisarts");
@@ -86,28 +95,29 @@
                       $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
                   foreach($result as $huisarts){
-                      $id = $huisarts["id"];
+                      $id = $huisarts["gebruiker_id"];
                       $naam = $huisarts["naam"];
-
+                      
                       echo "<option value='$id'>$naam</option>";
                       }
+                    
                     }
               ?>
               </select><br />
               
 
               <!-- Ophalen en printen van momenteel geregistreerde verzekeringsmaatschappijen -->
-              <select name="verzekeringsmaatschappij" required>
+              
               <?php 
                 // Als de momenteel ingelogde gebruiker een verzekeraar is word deze geselecteerd
                 if($_SESSION["rol"] == "verzekeraar"){ 
-                  echo "<option selected value=" .$_SESSION['id']. "></option>";
+                  echo "<input type='hidden' selected name='verzekeringsmaatschappij' value=" .$_SESSION['id']. ">";
                 }
 
                 // Is de momenteel ingelogde gebruiker geen verzekeraar wordt er een lijst met momenteel aangesloten verzekeraars getoond
                 else{ 
                   echo 
-                  "                
+                  "   <select name='verzekeringsmaatschappij' id='multiselect' required>
                       <option selected disabled>Kies een verzekeringsmaatschappij</option>";
                   
                       $stmt = $verbinding->prepare("SELECT * FROM verzekeringsmaatschappij");
@@ -120,25 +130,29 @@
 
                           echo "<option value='$id'>$vestigingsnaam</option>";
                       }
+                      echo "</select>";
                     }
               ?>
-            </select><br /><br />
+            </select>
             </div>  
 
             <input type="hidden" name="rol" value="client">                                                 <!-- Rol selectie -->
 
             
 
-            <input type="text" name="adres" required>Straat + Huisnummer <br />
-            <input type="text" name="postcode" required>Postcode <br />
-            <input type="text" name="woonplaats" required>Woonplaats <br /><br />
+            <input type="text" name="adres" id="field" autocomplete="off" required>Straat + Huisnummer <br />
+            <input type="text" name="postcode" id="field" autocomplete="off" required>Postcode <br />
+            <input type="text" name="woonplaats" id="field" autocomplete="off" required>Woonplaats <br /><br />
+            
+            <div id="contactgegevens">
+              <input type="number" name="telefoon" id="field" autocomplete="off" required>Telefoon <br />
+              <input type="text" name="email" id="field" autocomplete="off" required>E-mailadres <br /><br />
+            </div>
 
-            <input type="number" name="telefoon" required>Telefoon <br />
-            <input type="text" name="email" required>E-mailadres <br /><br />
-
-            <input type="text" name="gebruikersnaam">Gebruikersnaam <br />
-            <input type="password" name="wachtwoord">Wachtwoord <br /><br />
-          
+            <div id="inloggegevens">
+              <input type="text" name="gebruikersnaam" autocomplete="off" id="field">Gebruikersnaam <br />
+              <input type="password" name="wachtwoord" autocomplete="off" id="field">Wachtwoord <br /><br />
+            </div>
 
             <input name="submit" type="submit">
         </form>
@@ -175,8 +189,10 @@
                $stmt->execute(array($verbinding->lastInsertId(), $datum, $lengte, $geslacht, $gewicht, $bloedgroep, $huisarts, $verzekeringsmaatschappij));
 
                echo "Cliënt is succesvol toegevoegd.";
+           
            }
         ?>
         
     </div>
+  </div>
   </body>

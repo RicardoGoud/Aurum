@@ -44,6 +44,12 @@
       </div>
     </div>
     <!-- Eind logo + inlog -->
+    <div id="groet">
+        <a style="color: #226282; font-size: 50px;">Hallo</a><br />
+        <?php echo $_SESSION["voornaam"] ." ". $_SESSION["tussenvoegsel"] ." ". $_SESSION["achternaam"]; ?>.<br />
+        <hr style="width: 280px; border-width:0; color: #226282; background-color: #226282; height: 3px;">
+        <a style="font-size:20px; font-family: Arial;">laten we beginnen.</a>
+    </div>
     
     <?php 
     // Haal alle orders op
@@ -54,12 +60,12 @@
     <div id="big_wrapper">
         <table>
             <tr>
-                <td>Cliënt</td>
-                <td>Medicijn</td>
-                <td>Datum Uitgeschreven</td>
-                <td>Opgehaald</td>
-                <td>Datum opgehaald</td>
-                <td>Afgerond?</td>
+                <th>Cliënt</th>
+                <th>Medicijn</th>
+                <th>Datum Uitgeschreven</th>
+                <th>Opgehaald</th>
+                <th>Datum opgehaald</th>
+                <th>Afgerond?</th>
             </tr>
                 <?php 
                 foreach($medicijn_orders as $medicijn_order){

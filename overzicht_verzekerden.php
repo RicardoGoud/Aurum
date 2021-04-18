@@ -3,6 +3,7 @@
   <head>
     <title>Aurum</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/overzicht_verzekerden.css">
     <script src="https://kit.fontawesome.com/c9b427fe35.js" crossorigin="anonymous"></script> <!-- Link naar fontawesome -->
     <?php
     include("./DBConfig.php"); // Sessie is gestart in DBConfig
@@ -35,6 +36,13 @@
     <!-- Eind logo + inlog -->
 
     <table>
+      <th>Voornaam</th>
+      <th>Tussenvoegsel</th>
+      <th>Achternaam</th>
+      <th>Adres</th>
+      <th>Postcode</th>
+      <th>Woonplaats</th>
+      <th>Dossiers</th>
     <?php 
     if($_SESSION["rol"] == "verzekeraar" ){
       $stmt = $verbinding->prepare("SELECT * FROM client WHERE verzekeringsmaatschappij = ?");
@@ -53,11 +61,18 @@
         $tussenvoegsel = $gebruiker['tussenvoegsel'];
         $achternaam = $gebruiker['achternaam'];
 
+        $adres = $gebruiker["adres"];
+        $postcode = $gebruiker["postcode"];
+        $woonplaats = $gebruiker["woonplaats"];
+
         echo     "<tr>
                   <td>$voornaam</td>
                   <td>$tussenvoegsel</td>
                   <td>$achternaam</td>
-                  <td><button onclick='javascript:location.href=\"dossier.php?client=$id\"'>dossier</button></td>
+                  <td>$adres</td>
+                  <td>$postcode</td>
+                  <td>$woonplaats</td>
+                  <td style='width: 40px; text-align: center;'><button onclick='javascript:location.href=\"dossier.php?client=$id\"'><i class='fas fa-book-open'></i></button></td>
                   </tr>
                   <input hidden value='$id' name='client_id' />";
       }
@@ -79,12 +94,21 @@
         $tussenvoegsel = $gebruiker['tussenvoegsel'];
         $achternaam = $gebruiker['achternaam'];
 
+        $adres = $gebruiker["adres"];
+        $postcode = $gebruiker["postcode"];
+        $woonplaats = $gebruiker["woonplaats"];
+
         echo     "<tr>
                   <td>$voornaam</td>
                   <td>$tussenvoegsel</td>
                   <td>$achternaam</td>
-                  <td><button onclick='javascript:location.href=\"dossier.php?client=$id\"'>dossier</button></td>
-                  </tr>";
+                  <td>$adres</td>
+                  <td>$postcode</td>
+                  <td>$woonplaats</td>
+                  <td style='width: 40px; text-align: center;'><button onclick='javascript:location.href=\"dossier.php?client=$id\"'><i class='fas fa-book-open'></i></button></td>
+                  </tr>
+                  <input hidden value='$id' name='client_id' />"
+                  ;
       }
 
     }elseif($_SESSION["rol"] == "huisarts" ){
@@ -104,10 +128,20 @@
         $tussenvoegsel = $gebruiker['tussenvoegsel'];
         $achternaam = $gebruiker['achternaam'];
 
+        $adres = $gebruiker["adres"];
+        $postcode = $gebruiker["postcode"];
+        $woonplaats = $gebruiker["woonplaats"];
+
         echo     "<tr>
-                  <td>$voornaam $tussenvoegsel $achternaam</td>
-                  <td><button onclick='javascript:location.href=\"dossier.php?client=$id\"'>dossier</button></td>
-                  </tr>";
+                  <td>$voornaam</td>
+                  <td>$tussenvoegsel</td>
+                  <td>$achternaam</td>
+                  <td>$adres</td>
+                  <td>$postcode</td>
+                  <td>$woonplaats</td>
+                  <td style='width: 40px; text-align: center;'><button onclick='javascript:location.href=\"dossier.php?client=$id\"'><i class='fas fa-book-open'></i></button></td>
+                  </tr>
+                  <input hidden value='$id' name='client_id' />";
       }
     }
     ?>

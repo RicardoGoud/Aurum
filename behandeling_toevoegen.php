@@ -3,6 +3,7 @@
   <head>
     <title>Aurum</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/behandeling_toevoegen.css">
     <script src="https://kit.fontawesome.com/c9b427fe35.js" crossorigin="anonymous"></script> <!-- Link naar fontawesome -->
     <?php
     include("./DBConfig.php"); // Sessie is gestart in DBConfig
@@ -33,6 +34,8 @@
       </div>
     </div>
     <!-- Eind logo + inlog -->
+    <div id=achtergrond_div>
+    <div class="behandeling_toevoegen_div">
 
     <?php 
     // Statement voor de gebruiker informatie
@@ -49,9 +52,9 @@
     ?>
     
     <form name="behandeling_toevoegen" method="POST" action="">
-
+      <div id="aandoening_allergie_div">
       <!-- Haalt alle aandoeningen uit de database op -->
-      <select name="aandoening">
+      <select id="multiselect" name="aandoening">
         <option selected disabled>Kies een aandoening</option>
         <?php
         // Statement voor alle aandoeningen
@@ -66,10 +69,10 @@
           echo "<option value='$id'>$naam</option>";
         }
         ?>
-      </select>
+      </select><br />
 
       <!-- Haalt alle allergieën uit de database op -->
-      <select name="allergie">
+      <select id="multiselect" name="allergie">
         <option selected disabled>Kies een allergie</option>
         <?php
         // Statement voor alle allergieën
@@ -85,9 +88,10 @@
         }
         ?>
       </select>
-
+      </div>
+      <div id="medicijn_order_div">
       <!-- Haalt alle medicijnen uit de database op -->
-      <select name="medicijn">
+      <select id="multiselect" name="medicijn">
         <option selected disabled>Kies een medicijn</option>
         <?php
         // Statement voor alle allergieën
@@ -102,10 +106,10 @@
           echo "<option value='$id'>$naam</option>";
         }
         ?>
-      </select>
+      </select><br />
 
         <!-- Haalt alle apothekers uit de database op -->
-        <select name="apotheek">
+        <select id="multiselect" name="apotheek">
         <option selected disabled>Kies een apotheker</option>
         <?php
         // Statement voor alle apothekers
@@ -120,11 +124,12 @@
           echo "<option value='$id'>$naam</option>";
         }
         ?>
-        </select>
+        </select><br />
 
-        <input type="text" name="datum" value="<?php echo date("Y-m-d")?>" required readonly/></input>
-
-        <textarea name="opmerking" rows="10" cols="50" required></textarea>
+        <input type="text" id="multiselect" name="datum" value="<?php echo date("Y-m-d")?>" required readonly/></input><br />
+      </div>
+        
+        <textarea id="multiselect" name="opmerking" rows="5" cols="30" required></textarea>
 
         <input type="submit" name="submit" value="Bevestigen"></input>
     </form>
@@ -172,4 +177,7 @@
                echo "Behandeling is succesvol toegevoegd.";
            }
         ?>
+        </div>
+        </div>
+        </body>
     </html>

@@ -35,6 +35,7 @@
       </div>
     </div>
     <!-- Eind logo + inlog -->
+    <div id="achtergrond_div">
 
     <p>Welke gebruiker wilt u aanmaken?</p>
     <h4>Mocht de gewenste gebruiker er niet tussenstaan, <br />neem dan contact op met de beheerder.</h4>
@@ -53,4 +54,5 @@
             </div>
         </a>
     </div>
+  </div>
   </body>

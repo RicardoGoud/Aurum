@@ -53,7 +53,7 @@
     </div>
 
     <?php
-    if($_SESSION["rol"] == "verzekeraar" || $_SESSION["rol"] == "admin" || $_SESSION["rol"] == "huisarts" ){
+    if($_SESSION["rol"] == "verzekeraar" || $_SESSION["rol"] == "admin"){
         echo '
             <div id="main_wrapper">
             <div class="div-dashboard" style="float: left;">
@@ -80,10 +80,33 @@
             <p>Aandoening aanmaken</p>
             <button onclick="location.href=`./aandoening_aanmaken.php`" type="button">Start</button>
             </div>
+
+            <div class="div-dashboard" style="float: left;">
+            <i class="fas fa-allergies" style="font-size: 35px;"></i>
+            <p>Allergie<br />aanmaken</p>
+            <button onclick="location.href=`./allergie_aanmaken.php`" type="button">Start</button>
+            </div>
             </div>
         ';
     }elseif($_SESSION["rol"] == "apotheek"){
         header("Location: ./dashboard_apotheek.php");
+
+    }elseif($_SESSION["rol"] == "huisarts"){
+      echo '
+      <div id="main_wrapper">
+      <div class="div-dashboard" style="float: left;">
+      <i class="fas fa-user" style="font-size: 35px;"></i>
+      <p>Cliënt<br /> aanmaken</p>
+      <button onclick="location.href=`./client_aanmaken.php`" type="button">Start</button>
+      </div>
+      
+      <div class="div-dashboard" style="float: left;">
+      <i class="fas fa-users" style="font-size: 35px;"></i>
+      <p>Overzicht cliënten</p>
+      <button onclick="location.href=`./overzicht_verzekerden.php`" type="button">Start</button>
+      </div>
+
+  ';
     }
     ?>
 

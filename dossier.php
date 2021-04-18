@@ -29,24 +29,24 @@
       <div id="inlogknop-div">
       <button onclick="location.href=`./overzicht_verzekerden.php`">Terug</button>
       </div>
-      <button onclick="location.href=`./behandeling_toevoegen.php?client=<?php echo $_GET['client']; ?>`" type="button">Behandeling toevoegen</button>
     </div>
 
     <?php
     include('./DBConfig.php');
 
-    $stmt = $verbinding->prepare("SELECT * FROM client WHERE gebruiker_id = ?"); // Bereid de variabele $stmt voor
+    $stmt = $verbinding->prepare("SELECT * FROM client WHERE gebruiker_id = ?"); // Haal de informatie voor de client op
     $stmt->execute(array($_GET['client']));
     $client = $stmt -> fetch(PDO::FETCH_ASSOC);
 
     
-    $stmt = $verbinding->prepare("SELECT * FROM gebruiker WHERE id = ?"); // Bereid de variabele $stmt voor
+    $stmt = $verbinding->prepare("SELECT * FROM gebruiker WHERE id = ?"); // Haal de informatie voor de client op
     $stmt->execute(array($_GET['client']));
     $gebruiker = $stmt -> fetch(PDO::FETCH_ASSOC);
     ?>
     <!-- Eind logo + inlog -->
 
       <?php
+        // Maak van alle opgehaalde informatie van de client variabelen
         $voornaam = $gebruiker["voornaam"];
         $tussenvoegsel = $gebruiker["tussenvoegsel"];
         $achternaam = $gebruiker["achternaam"];
@@ -81,9 +81,6 @@
         $stmt->execute(array($allergie_id));
         $allergie = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-        $stmt = $verbinding->prepare("SELECT * FROM medicijn_orders WHERE client_id = ?");
-        $stmt->execute(array($_GET["client"]));
-        $medicatie = $stmt -> fetchAll(PDO::FETCH_ASSOC);
       ?>
 
   <div class="big_wrapper">    
@@ -178,14 +175,17 @@
         <tr>
           <td>Medicatie:</td>
           <td style="font-family: Segoe UI;">
-          <?php
-          foreach($medicatie as $medicijn ){
-            $stmt = $verbinding->prepare("SELECT * FROM medicijnen WHERE id = ?");
-            $stmt->execute(array($medicijn["medicijn"]));
-            $medicijn_result = $stmt -> fetch(PDO::FETCH_ASSOC);
-            echo $medicijn_result["medicijn"];
-            break;
-          };
+            <?php
+              $stmt = $verbinding->prepare("SELECT * FROM medicijn_orders WHERE client_id = ?");
+              $stmt->execute(array($_GET["client"]));
+              $medicatie = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+              foreach($medicatie as $medicijn ){
+                $stmt = $verbinding->prepare("SELECT * FROM medicijnen WHERE id = ?");
+                $stmt->execute(array($medicijn["medicijn"]));
+                $medicijn_result = $stmt -> fetch(PDO::FETCH_ASSOC);
+                echo $medicijn_result["medicijn"];
+                break;
+              };
             ?>
           </td>
         </tr>
@@ -199,32 +199,55 @@
 
       <table>
          <tr id="header">
-           <td>Medicijn</td>
-           <td>Datum voorgeschreven</td>
-           <td>Apotheek</td>
-           <td>Opgehaald</td>
-           <td>Datum opgehaald</td>
+           <th>Medicijn</th>
+           <th>Datum voorgeschreven</th>
+           <th>Apotheek</th>
+           <th>Opgehaald</th>
+           <th>Datum opgehaald</th>
          </tr>
         <?php 
-          foreach($medicatie as $medicijn){
-            // Haalt de namen van de medicijnen van alle orders voor de desbtetreffende cliënt op
-            $stmt = $verbinding->prepare("SELECT * FROM medicijnen WHERE id = ?");
-            $stmt->execute(array($medicijn["medicijn"]));
-            $medicijn_result = $stmt -> fetch(PDO::FETCH_ASSOC);
+              // Haal alle orders op
+              $stmt = $verbinding->prepare("SELECT * FROM medicijn_orders WHERE client_id = ?");
+              $stmt->execute(array($_GET["client"]));
+              $medicijn_orders = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
-            $stmt = $verbinding->prepare("SELECT * FROM apothekers WHERE gebruiker_id = ?");
-            $stmt->execute(array($medicijn["apotheker"]));
-            $apotheker = $stmt -> fetch(PDO::FETCH_ASSOC);
+             
 
+            foreach($medicijn_orders as $medicijn_order){
+              $stmt = $verbinding->prepare("SELECT * FROM gebruiker WHERE id = ?");
+              $stmt->execute(array($medicijn_order["client_id"]));
+              $client_ids = $stmt -> fetch(PDO::FETCH_ASSOC);
 
+              $stmt = $verbinding->prepare("SELECT * FROM medicijnen WHERE id = ?");
+              $stmt->execute(array($medicijn_order["medicijn"]));
+              $medicijn = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-            echo "<tr> <td>" . $medicijn_result["medicijn"] . "</td>";
-            echo "<td>" . $medicijn["datum_voorgeschreven"] . "</td>";
-            echo "<td>" . $apotheker["vestigingsnaam"] . "</td>";
-          } 
+               // Haalt de desbetreffende Apotheek op
+               $stmt = $verbinding->prepare("SELECT * FROM apothekers WHERE gebruiker_id = ?");
+               $stmt->execute(array($medicijn_order["apotheker"]));
+               $apotheek = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+              $medicijn_order_id = $medicijn_order["id"];
+
+              echo "<tr><td>" . $medicijn["medicijn"] . "</td>";
+
+              echo "<td>" . $medicijn_order["datum_voorgeschreven"] . "</td>";
+
+              echo "<td>" . $apotheek["vestigingsnaam"] . "</td>";
+
+              if($medicijn_order["opgehaald"] == 0){
+                $opgehaald = "Nee";
+              }else{
+                  $opgehaald = "Ja";
+              }
+              echo "<td>" . $opgehaald . "</td>";
+
+              echo "<td>" . $medicijn_order["datum_opgehaald"] . "</td>";
+            }
         ?>
         </tr>
       </table>
+      <button onclick="location.href=`./behandeling_toevoegen.php?client=<?php echo $_GET['client']; ?>`" type="button">Behandeling toevoegen</button>
     </div>
 
     

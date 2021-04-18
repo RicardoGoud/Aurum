@@ -3,6 +3,7 @@
   <head>
     <title>Gebruiker aanmaken</title>
     <link rel="stylesheet" href="./css/style.css"> <!-- Haal de algemene style op -->
+    <link rel="stylesheet" href="./css/gebruiker_aanmaken.css"> <!-- Haal de algemene style op -->
     <?php
     include("./DBConfig.php"); // Sessie is gestart in DBConfig
     ?>
@@ -34,28 +35,32 @@
       </div>
     </div>
     <!-- Eind logo + inlog -->
-
+    <div id="achtergrond_div">
     <div class="form-aanmaken-gebruiker-div">
 
         <form action="" method="POST" id="form-aanmaken-gebruiker">
 
-            <input type="text" name="voornaam" required>Voornaam <br />
-            <input type="text" name="tussenvoegsel">Tussenvoegsel <br />
-            <input type="text" name="achternaam" required>Achternaam <br /><br />
+            <div class="naamgegevens">
+              <input type="text" name="voornaam" id="field" required autocomplete="off"> Voornaam <br />
+              <input type="text" name="tussenvoegsel" id="field" autocomplete="off"> Tussenvoegsel <br />
+              <input type="text" name="achternaam" required id="field" autocomplete="off"> Achternaam <br /><br />
+            </div>
 
-            <input type="text" name="vestigingsnaam" required>Vestigingsnaam <br /><br />
+            <div id="vestigingsnaam">
+              <input type="text" name="vestigingsnaam" id="field" autocomplete="off" required>Vestigingsnaam <br /><br />
+            </div>
 
             <input type="hidden" name="rol" value="huisarts">                                                 <!-- Rol selectie -->
 
-            <input type="text" name="gebruikersnaam">Gebruikersnaam <br />
-            <input type="password" name="wachtwoord">Wachtwoord <br /><br />
+            <input type="text" id="field" autocomplete="off" name="gebruikersnaam">Gebruikersnaam <br />
+            <input type="password" id="field" autocomplete="off" name="wachtwoord">Wachtwoord <br /><br />
 
-            <input type="text" name="adres" required>Straat + Huisnummer <br />
-            <input type="text" name="postcode" required>Postcode <br />
-            <input type="text" name="woonplaats" required>Woonplaats <br /><br />
+            <input type="text" id="field" autocomplete="off" name="adres" required>Straat + Huisnummer <br />
+            <input type="text" id="field" autocomplete="off" name="postcode" required>Postcode <br />
+            <input type="text" id="field" autocomplete="off" name="woonplaats" required>Woonplaats <br /><br />
 
-            <input type="number" name="telefoon" required>Telefoon <br />
-            <input type="text" name="email" required>E-mailadres <br /><br />
+            <input type="number" id="field" autocomplete="off" name="telefoon" required>Telefoon <br />
+            <input type="text" id="field" autocomplete="off" name="email" required>E-mailadres <br /><br />
 
             <input name="submit" type="submit">
         </form>
@@ -92,5 +97,6 @@
            }
         ?>
         
+    </div>
     </div>
   </body>

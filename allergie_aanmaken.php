@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="nl">
   <head>
-    <title>Cliënt aanmaken</title>
+    <title>Allergie aanmaken</title>
     <link rel="stylesheet" href="./css/style.css"> <!-- Haal de algemene style op -->
-    <link rel="stylesheet" href="./css/aandoening_aanmaken.css"> <!-- Haal de algemene style op -->
+    <link rel="stylesheet" href="./css/allergie_aanmaken.css"> <!-- Haal de algemene style op -->
 
     <?php
     include("./DBConfig.php"); // Sessie is gestart in DBConfig
@@ -40,22 +40,22 @@
     <div id=achtergrond_div>
 
     <div id="inhoud_div">
-      <div id="aandoening_aanmaken">
-        <p>Vul hieronder een aandoening in. Deze zal toegevoegd worden aan de database.</p><p> Let op: Hoofdlettergevoelig!</p><br /><br />
-    <form action="" method="POST" id="form-aandoening_aanmaken">
-        <input type="text" name="aandoening" required placeholder="b.v.b. Paracetamol"><br /><br />
+      <div id="allergie_aanmaken">
+        <p>Vul hieronder een allergie in. Deze zal toegevoegd worden aan de database.</p><p> Let op: Hoofdlettergevoelig!</p><br /><br />
+    <form action="" method="POST" id="form-allergie_aanmaken">
+        <input type="text" name="allergie" required placeholder="b.v.b. Notenallergie"><br /><br />
         <input type="submit" name="submit" value="Aanmaken">
     </form>
 
     <?php 
         if(isset($_POST["submit"])){
-            $aandoening = $_POST["aandoening"];
+            $allergie = $_POST["allergie"];
 
-        $stmt = $verbinding->prepare("INSERT INTO aandoening (aandoening)
+        $stmt = $verbinding->prepare("INSERT INTO allergie (allergie)
                        VALUES (?)");
-               $stmt->execute(array($aandoening));
+               $stmt->execute(array($allergie));
                
-               echo "Aandoening is succesvol toegevoegd.";
+               echo "allergie is succesvol toegevoegd.";
         }
     ?>
       </div>
